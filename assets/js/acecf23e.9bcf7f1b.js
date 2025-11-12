@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkblog_azarmalikov_com=globalThis.webpackChunkblog_azarmalikov_com||[]).push([[1903],{1912:a=>{a.exports=JSON.parse('{"blogBasePath":"/blog.azarmalikov.com/blog","blogTitle":"Blog","authorsListPath":"/blog.azarmalikov.com/blog/authors"}')}}]);

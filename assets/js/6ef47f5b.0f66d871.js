@@ -1,0 +1,1 @@
+"use strict";(globalThis.webpackChunkblog_azarmalikov_com=globalThis.webpackChunkblog_azarmalikov_com||[]).push([[3980],{1578:a=>{a.exports=JSON.parse('{"metadata":{"permalink":"/blog.azarmalikov.com/blog","page":1,"postsPerPage":10,"totalPages":1,"totalCount":4,"blogDescription":"Blog","blogTitle":"Blog"}}')}}]);
