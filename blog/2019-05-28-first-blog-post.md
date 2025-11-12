@@ -1,7 +1,7 @@
 ---
-slug: first-blog-post
+slug: Hackerlik budur
 title: First Blog Post
-authors: [slorber, yangshun]
+authors: [azar-malikov]
 tags: [hola, docusaurus]
 ---
 
