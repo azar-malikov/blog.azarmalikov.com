@@ -1,0 +1,32 @@
+---
+title: 'Journalctl as a story engine on Linux hosts'
+description: 'How to read systemd journals like an investigator: units, identifiers, and the questions that turn noise into timelines.'
+publishedAt: '2025-02-18'
+updatedAt: '2025-02-20'
+---
+
+import Callout from '@/components/mdx/Callout.astro';
+
+Linux investigations often fail for a boring reason: people grep logs without a theory. `journalctl` is powerful because it is **structured**—but structure only helps if you know which questions you are trying to answer.
+
+## Start from the service, not from the keyword
+
+When something breaks, begin with the unit that should have done the work:
+
+```bash
+journalctl -u ssh --since "2 hours ago" -o short-iso
+```
+
+This is not glamorous. It is how you avoid drowning in unrelated kernel chatter.
+
+<Callout variant="warn" title="Correlation is not causation">
+  A perfect timestamp match can still be coincidence. Always ask what mechanism would connect event A to event B.
+</Callout>
+
+## Build a timeline, not a pile
+
+A useful incident narrative has phases: precursor signals, boundary crossings, persistence attempts, impact. Your journal queries should mirror those phases—**even if** you later discard a phase as empty.
+
+## What to carry forward
+
+If you do this consistently, you will notice patterns in how failures announce themselves in your environment. That pattern library is more valuable than any single command cheat sheet—though cheat sheets still help you move fast under stress.

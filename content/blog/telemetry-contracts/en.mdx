@@ -1,0 +1,29 @@
+---
+title: 'Telemetry contracts: designing signals that defenders can trust'
+description: 'Why “more logs” is not a strategy—and how to specify observable events that remain stable as systems evolve.'
+publishedAt: '2025-01-09'
+updatedAt: '2025-01-09'
+---
+
+Defensive teams are flooded with data and still blind. The problem is rarely volume. It is **ambiguity**: events change shape across versions, vendors rename fields, and nobody owns the meaning of a record.
+
+## What a contract is
+
+A telemetry contract names:
+
+- the **event** (what happened),
+- the **entity** it is about,
+- the **minimum fields** required to reason,
+- and the **stability guarantees** you expect across releases.
+
+Contracts are boring documents. That is why they work.
+
+## From collection to comprehension
+
+Collection without comprehension produces dashboards that feel insightful until an incident arrives. Contracts force you to decide what “known good” and “known suspicious” could look like **in your environment**—not in a vendor slide deck.
+
+## A practical next step
+
+Pick one high-risk workflow—remote access, privilege changes, identity federation—and write a one-page contract for the five signals you would want if you had to explain the system to a tired analyst at 03:00.
+
+If you cannot write that page, your SIEM rules are built on hope.

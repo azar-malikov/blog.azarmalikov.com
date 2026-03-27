@@ -1,0 +1,17 @@
+{
+  "slug": "indicator-of-compromise",
+  "keyword": "Indicator of compromise (IoC)",
+  "category": "dfir",
+  "aliases": ["IoC"],
+  "relatedTools": ["SIEM", "EDR", "proxy logs"],
+  "relatedTechniques": ["T1041"],
+  "links": {
+    "writeups": [],
+    "cheatsheets": ["journalctl"],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

@@ -1,0 +1,55 @@
+---
+title: 'Active Directory enumeration: a calm first pass'
+description: 'A staged lab narrative from DNS and LDAP to graph-shaped questions—built for learning, not tool hype.'
+publishedAt: '2025-01-22'
+updatedAt: '2025-01-25'
+---
+
+import Stage from '@/components/mdx/Stage.astro';
+import CommandBlock from '@/components/mdx/CommandBlock.astro';
+
+<Stage id="recon" title="Reconnaissance" summary="Establish naming context: domain, controllers, and time sync reality.">
+
+Start with boring facts that prevent silly mistakes later: the DNS suffix, which host claims to be a domain controller, and whether your workstation trusts the same time source as Kerberos does.
+
+```powershell
+systeminfo | findstr /B /C:"OS Name" /C:"System Type"
+```
+
+If basic naming does not line up, LDAP and Kerberos errors will look like “random magic” when they are not.
+
+</Stage>
+
+<Stage id="ldap" title="LDAP orientation" summary="Ask directory questions that reduce the graph you will need to walk.">
+
+LDAP is not only a protocol; it is a **language for asking structured questions** about identity and membership. Before graph tools, practice questions that are legible on paper:
+
+- what OUs exist,
+- what groups look privileged,
+- what users have unusual delegation surfaces.
+
+<CommandBlock title="example ldapsearch filter sketch">
+{`ldapsearch -x -H ldap://dc01.lab.local -D "user@lab.local" -w '***' -b "DC=lab,DC=local" "(objectClass=user)" sAMAccountName memberOf`}
+</CommandBlock>
+
+Treat output as evidence, not trivia. The point is repeatable queries.
+
+</Stage>
+
+<Stage id="kerberos" title="Kerberos checkpoints" summary="Validate ticket behavior before chasing exotic abuse chains.">
+
+Many early failures are clock skew, wrong SPN assumptions, or misunderstanding service vs user tickets. Confirm you can obtain and inspect tickets in the lab’s intended way before moving to complex delegation abuse.
+
+</Stage>
+
+<Stage id="graph" title="Graph-shaped thinking" summary="Move from lists to paths: what relationships create privilege movement?">
+
+Graph tools shine when your questions become relational: **who can reach admin-equivalent roles through edges, not through single attributes**. Even if you run a graph query, write the human question first.
+
+</Stage>
+
+<Stage id="defensive" title="Defensive notes" summary="What should blue team telemetry emphasize in this lab?">
+
+Focus on identity lifecycle signals: unusual LDAP query volume from unexpected hosts, Kerberos anomalies, and changes to group membership that match your learned attack paths.
+
+</Stage>

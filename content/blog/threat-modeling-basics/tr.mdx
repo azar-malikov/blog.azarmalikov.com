@@ -1,0 +1,26 @@
+---
+title: 'Tehdit modellemesi: disiplinli hayal gücü'
+description: 'Risk konuşmalarını gösteriş olmadan test edilebilir güvenlik iddialarına dönüştürmek için pratik çerçeve.'
+publishedAt: '2025-03-03'
+updatedAt: '2025-03-03'
+---
+
+import Callout from '@/components/mdx/Callout.astro';
+
+Ekipler çoğu zaman araç eksikliğinden değil, gerçeği sloganlarla pazarlık ettikleri için hata yapar. Tehdit modellemesi tersi bir harekettir: **varsayımları adlandırmak**, **sonuçları izlemek** ve **sonraki doğrulamayı seçmek**.
+
+## Model nedir (ve ne değildir)
+
+Tehdit modeli bir diyagram yarışması değildir. Asgari olarak üç soruya yapılandırılmış bir cevaptır:
+
+1. Ne koruyoruz?
+2. Kimin çıkarı olabilir ve neden?
+3. Sistem gerçekte nasıl inşa edildiyse hangi hatalar makul?
+
+<Callout title="Operatör alışkanlığı" variant="note">
+  Mimariyi incelerken “yanlışsa acıtacak iddialar” listesini açık tutun. Bu liste test planınız olur.
+</Callout>
+
+## Anlatıdan kontrollere
+
+Modelleme ile mühendislik arasındaki köprü **izlenebilirliktir**. Her tehdit senaryosu, ortamınızda o başarısızlığı güvenli biçimde gözlemleyeceğiniz bir **yönteme** bağlanmalıdır.

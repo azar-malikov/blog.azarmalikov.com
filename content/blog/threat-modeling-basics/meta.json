@@ -1,0 +1,32 @@
+{
+  "slug": "threat-modeling-basics",
+  "category": ["strategy"],
+  "tags": ["threat modeling", "assumption hunting", "architecture"],
+  "coverImage": "/images/cover-threat.svg",
+  "featured": true,
+  "series": null,
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": {
+      "en": "source",
+      "az": "current",
+      "tr": "current",
+      "ru": "missing"
+    },
+    "updatedAtByLocale": {
+      "en": "2025-03-01",
+      "az": "2025-03-02",
+      "tr": "2025-03-03"
+    }
+  },
+  "visibility": "public",
+  "author": {
+    "name": "Azar Malikov",
+    "role": "Security researcher"
+  },
+  "links": {
+    "glossary": ["attack-surface"],
+    "cheatsheets": ["nmap-sweep"],
+    "notes": []
+  }
+}

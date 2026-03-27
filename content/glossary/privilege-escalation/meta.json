@@ -1,0 +1,17 @@
+{
+  "slug": "privilege-escalation",
+  "keyword": "Privilege escalation",
+  "category": "offense",
+  "aliases": ["privesc"],
+  "relatedTools": ["linpeas", "winpeas"],
+  "relatedTechniques": ["T1548"],
+  "links": {
+    "writeups": ["htb-linux-privesc-01"],
+    "cheatsheets": ["find-suid", "getcap"],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

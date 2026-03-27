@@ -1,0 +1,61 @@
+---
+import type { Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+
+interface Props {
+  lang: Locale;
+  counts: {
+    blog: number;
+    writeups: number;
+    cheatsheets: number;
+    glossary: number;
+    checklists: number;
+    notes: number;
+    snippets: number;
+  };
+}
+
+const { lang, counts } = Astro.props;
+---
+
+<section
+  class="border-b border-line/60 bg-ribbon/80 py-6 backdrop-blur-[2px] md:py-7"
+  aria-label={t(lang, 'studio.corpus')}
+>
+  <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+    <p class="studio-kicker max-w-[14rem]">{t(lang, 'studio.corpus')}</p>
+    <dl class="grid flex-1 grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-7">
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.blog')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.blog}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.writeups')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.writeups}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.cheatsheets')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.cheatsheets}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.glossary')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.glossary}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.checklists')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.checklists}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'nav.notes')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.notes}</dd>
+      </div>
+      <div>
+        <dt class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{t(lang, 'studio.snippets')}</dt>
+        <dd class="mt-1 font-display text-2xl tabular-nums text-ink">{counts.snippets}</dd>
+      </div>
+    </dl>
+  </div>
+  <p class="mt-4 max-w-3xl font-body text-xs leading-relaxed text-ink-faint">
+    Static counts from the build; future enhancement: live aggregates from a read-only API or edge KV without changing routes.
+  </p>
+</section>

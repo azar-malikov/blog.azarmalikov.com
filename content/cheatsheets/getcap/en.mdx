@@ -1,0 +1,15 @@
+---
+title: 'getcap: capability inventory'
+updatedAt: '2025-02-01'
+---
+
+## Recursive scan
+
+```bash
+getcap -r / 2>/dev/null
+```
+
+## Notes
+
+- Capabilities can grant **surprising primitives** without traditional SUID.
+- Map `cap_` tokens to behavior, not to vibes.

@@ -1,0 +1,10 @@
+{
+  "slug": "graph-queries-as-questions",
+  "title": "Graph queries as explicit questions",
+  "status": "idea",
+  "tags": ["active directory", "reasoning"],
+  "links": {
+    "blog": [],
+    "writeups": ["ad-enumeration-basics"]
+  }
+}

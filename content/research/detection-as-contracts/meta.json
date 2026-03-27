@@ -1,0 +1,10 @@
+{
+  "slug": "detection-as-contracts",
+  "title": "Detection engineering as contract negotiation",
+  "status": "active",
+  "tags": ["detection", "telemetry", "SOC"],
+  "links": {
+    "blog": ["telemetry-contracts"],
+    "writeups": []
+  }
+}

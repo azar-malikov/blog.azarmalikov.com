@@ -1,0 +1,17 @@
+{
+  "slug": "threat-model",
+  "keyword": "Threat model",
+  "category": "strategy",
+  "aliases": [],
+  "relatedTools": [],
+  "relatedTechniques": [],
+  "links": {
+    "writeups": [],
+    "cheatsheets": [],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

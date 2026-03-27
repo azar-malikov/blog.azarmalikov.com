@@ -1,0 +1,15 @@
+{
+  "id": "getcap",
+  "title": "getcap: capability inventory",
+  "shortDescription": "Enumerate Linux file capabilities recursively with suppressed errors.",
+  "category": "linux",
+  "tags": ["capabilities", "privilege escalation"],
+  "sourceTool": "getcap",
+  "platform": ["linux"],
+  "links": {
+    "writeups": ["htb-linux-privesc-01"],
+    "glossary": ["privilege-escalation"],
+    "snippets": ["snippet-cap-check"]
+  },
+  "promotedFrom": [{ "writeupSlug": "htb-linux-privesc-01", "stageId": "foothold" }]
+}

@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { getAllNotes, getNoteById } from '@/lib/content/notes';
+
+export function getStaticPaths() {
+  return getAllNotes().map((n) => ({ params: { lang: n.locale, id: n.id } }));
+}
+
+const { lang: raw, id } = Astro.params;
+if (!isLocale(raw ?? '') || !id) throw new Error('Invalid params');
+const lang = raw as Locale;
+const entry = getNoteById(id, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const { Content } = entry;
+---
+
+<BaseLayout title={entry.meta.title} description="Personal note" lang={lang} path={path}>
+  <article class="mx-auto max-w-measure">
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Note</p>
+      <h1 class="mt-3 font-display text-display-lg text-ink">{entry.meta.title}</h1>
+    </header>
+    <div class="prose-article mt-8">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

@@ -1,0 +1,17 @@
+{
+  "slug": "sigma-rule",
+  "keyword": "Sigma rule",
+  "category": "detection",
+  "aliases": [],
+  "relatedTools": ["sigma-cli", "SIEM converters"],
+  "relatedTechniques": [],
+  "links": {
+    "writeups": [],
+    "cheatsheets": [],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": "fragment-tls-observability",
+  "title": "Fragment: TLS client fingerprinting notes",
+  "tags": ["tls", "telemetry"],
+  "mood": "fragment",
+  "visibility": "public",
+  "links": {
+    "blog": [],
+    "glossary": ["tls-handshake"]
+  }
+}

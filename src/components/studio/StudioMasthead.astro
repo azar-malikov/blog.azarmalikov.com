@@ -1,0 +1,72 @@
+---
+import type { Locale } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
+import { LOCALE_LABELS } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { localizedPath } from '@/lib/paths';
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const localeLabel = LOCALE_LABELS[lang];
+---
+
+<section class="relative border-b border-line/60 pb-14 pt-2 md:pb-20 md:pt-4" aria-labelledby="masthead-title">
+  <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.1fr)] lg:gap-16">
+    <div class="flex flex-col justify-between gap-8 border-l-2 border-signal/40 pl-6 lg:max-w-xs">
+      <div>
+        <p class="studio-kicker">{t(lang, 'studio.registry')}</p>
+        <p class="mt-3 font-mono text-lg font-medium tracking-tight text-ink md:text-xl">{SITE.studioCode}</p>
+        <p class="mt-2 text-sm text-ink-muted">{localeLabel}</p>
+      </div>
+      <div class="hidden lg:block">
+        <p class="studio-kicker">{t(lang, 'home.masthead.index')}</p>
+        <ul class="mt-3 space-y-2 font-ui text-sm text-ink-muted">
+          <li>
+            <a class="hover:text-signal" href={localizedPath(lang, '/blog')}>{t(lang, 'nav.blog')}</a>
+          </li>
+          <li>
+            <a class="hover:text-signal" href={localizedPath(lang, '/writeups')}>{t(lang, 'nav.writeups')}</a>
+          </li>
+          <li>
+            <a class="hover:text-signal" href={localizedPath(lang, '/glossary')}>{t(lang, 'nav.glossary')}</a>
+          </li>
+          <li>
+            <a class="hover:text-signal" href={localizedPath(lang, '/search')}>{t(lang, 'nav.search')}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="min-w-0">
+      <p class="studio-kicker text-signal/90">{t(lang, 'home.hero.kicker')}</p>
+      <h1 id="masthead-title" class="mt-5 font-display text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.08] tracking-[-0.035em] text-ink">
+        {t(lang, 'home.hero.title')}
+      </h1>
+      <p class="mt-8 max-w-xl font-body text-lg leading-relaxed text-ink-muted md:text-[1.125rem]">
+        {t(lang, 'home.hero.lead')}
+      </p>
+      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line/50 pt-8 font-ui text-sm">
+        <a
+          href={localizedPath(lang, '/blog')}
+          class="font-semibold text-ink underline decoration-signal/50 decoration-2 underline-offset-4 transition hover:decoration-signal"
+          >{t(lang, 'nav.blog')}</a
+        >
+        <span class="text-ink-faint" aria-hidden="true">·</span>
+        <a
+          href={localizedPath(lang, '/writeups')}
+          class="font-semibold text-ink underline decoration-line/40 decoration-2 underline-offset-4 transition hover:decoration-signal"
+          >{t(lang, 'nav.writeups')}</a
+        >
+        <span class="text-ink-faint" aria-hidden="true">·</span>
+        <a
+          href={localizedPath(lang, '/search')}
+          class="font-semibold text-ink underline decoration-line/40 decoration-2 underline-offset-4 transition hover:decoration-signal"
+          >{t(lang, 'nav.search')}</a
+        >
+      </div>
+    </div>
+  </div>
+</section>

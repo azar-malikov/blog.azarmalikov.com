@@ -1,0 +1,15 @@
+{
+  "id": "openssl-sclient",
+  "title": "openssl s_client: TLS handshakes",
+  "shortDescription": "Inspect certificates and cipher negotiation without a browser.",
+  "category": "crypto",
+  "tags": ["tls", "openssl"],
+  "sourceTool": "openssl",
+  "platform": ["linux", "macos", "windows"],
+  "links": {
+    "writeups": [],
+    "glossary": ["tls-handshake"],
+    "snippets": []
+  },
+  "promotedFrom": []
+}

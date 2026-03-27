@@ -1,0 +1,38 @@
+---
+title: 'Threat modeling as disciplined imagination'
+description: 'A practical frame for turning vague risk conversations into testable security claims—without theatrics.'
+publishedAt: '2025-03-01'
+updatedAt: '2025-03-01'
+---
+
+import Callout from '@/components/mdx/Callout.astro';
+
+Most teams do not fail because they lack tools. They fail because they negotiate reality with slogans: “we are secure,” “we follow best practices,” “we will patch soon.” Threat modeling is the opposite move: it is a way to **name assumptions**, **trace consequences**, and **choose what to verify next**.
+
+## What a model is (and is not)
+
+A threat model is not a diagram contest. At minimum, it is a structured answer to three questions:
+
+1. What are we protecting?
+2. Who might care, and why?
+3. What failures are plausible given how the system is actually built?
+
+If your model cannot be falsified by evidence, it is not a model—it is a mood board.
+
+<Callout title="Operator habit" variant="note">
+  When reviewing architecture, keep a running list of “claims that would hurt if false.” That list becomes your test plan.
+</Callout>
+
+## From narrative to checks
+
+The bridge between modeling and engineering work is **traceability**. Each threat scenario should link to:
+
+- a **control** you believe exists,
+- a **signal** that would reveal failure,
+- and a **method** to observe that signal safely in your environment.
+
+This is how editorial rigor meets offensive craft: you stop debating abstractions and start scheduling verification.
+
+## Closing thought
+
+Threat modeling is not about predicting every breach. It is about refusing to pretend that unknowns are zero. The goal is calmer decisions under uncertainty—and a cleaner line from analysis to action.

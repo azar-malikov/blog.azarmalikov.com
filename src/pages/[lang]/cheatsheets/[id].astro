@@ -1,0 +1,91 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import RelatedPanel from '@/components/article/RelatedPanel.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { jsonLdArticle } from '@/lib/seo';
+import { getAllCheats, getCheatById } from '@/lib/content/cheatsheets';
+import { getWriteupBySlug } from '@/lib/content/writeups';
+import { getGlossaryBySlug } from '@/lib/content/glossary';
+
+export function getStaticPaths() {
+  return getAllCheats().map((c) => ({ params: { lang: c.locale, id: c.id } }));
+}
+
+const { lang: raw, id } = Astro.params;
+if (!isLocale(raw ?? '') || !id) throw new Error('Invalid params');
+const lang = raw as Locale;
+const entry = getCheatById(id, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const jsonLd = jsonLdArticle({
+  title: entry.meta.title,
+  description: entry.meta.shortDescription,
+  canonicalPath: path,
+  locale: lang,
+  type: 'article'
+});
+
+const related: { href: string; title: string; kind: string }[] = [];
+for (const w of entry.meta.links?.writeups ?? []) {
+  const we = getWriteupBySlug(w, lang);
+  if (we) related.push({ kind: 'Writeup', title: we.fm.title, href: `/${lang}/writeups/${w}/` });
+}
+for (const g of entry.meta.links?.glossary ?? []) {
+  const ge = getGlossaryBySlug(g, lang);
+  if (ge) related.push({ kind: 'Glossary', title: ge.meta.keyword, href: `/${lang}/glossary/${g}/` });
+}
+
+const { Content } = entry;
+---
+
+<BaseLayout title={entry.meta.title} description={entry.meta.shortDescription} lang={lang} path={path} jsonLd={jsonLd}>
+  <article class="mx-auto max-w-content">
+    <header class="max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-ink-faint">{t(lang, 'nav.cheatsheets')}</p>
+      <h1 class="mt-4 font-display text-display-xl text-ink">{entry.meta.title}</h1>
+      <p class="mt-4 text-lg text-ink-muted">{entry.meta.shortDescription}</p>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {entry.meta.tags.map((tag) => (
+          <span class="rounded-full border border-line/60 bg-canvas-muted/60 px-2 py-0.5 text-[11px] text-ink-muted">
+            {tag}
+          </span>
+        ))}
+      </div>
+      {entry.meta.warnings?.length ? (
+        <div class="mt-6 rounded-2xl border border-warn/30 bg-warn/5 p-4 text-sm text-ink-muted">
+          {entry.meta.warnings.map((w) => (
+            <p>{w}</p>
+          ))}
+        </div>
+      ) : null}
+    </header>
+
+    <div class="prose-article mt-10 max-w-measure">
+      <Content />
+    </div>
+
+    {entry.meta.promotedFrom?.length ? (
+      <section class="mt-10 rounded-2xl border border-line/60 bg-canvas-muted/40 p-6">
+        <h2 class="text-xs font-semibold uppercase tracking-[0.22em] text-ink-faint">{t(lang, 'common.usedIn')}</h2>
+        <ul class="mt-3 space-y-2 text-sm text-ink-muted">
+          {entry.meta.promotedFrom.map((p) => (
+            <li>
+              {p.writeupSlug ? (
+                <a class="link-underline" href={`/${lang}/writeups/${p.writeupSlug}/`}>
+                  Writeup: {p.writeupSlug}
+                  {p.stageId ? ` · stage ${p.stageId}` : ''}
+                </a>
+              ) : (
+                <span>Promoted artifact</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : null}
+
+    <RelatedPanel title={t(lang, 'common.related')} items={related} />
+  </article>
+</BaseLayout>

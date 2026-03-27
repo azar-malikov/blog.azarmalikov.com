@@ -1,0 +1,35 @@
+{
+  "id": "pe-linux",
+  "title": "Linux privilege escalation triage",
+  "description": "Fast, ordered checks that reduce thrash during labs.",
+  "category": "offense",
+  "tags": ["privilege escalation", "linux"],
+  "links": {
+    "writeups": ["htb-linux-privesc-01"],
+    "cheatsheets": ["find-suid", "getcap"],
+    "glossary": ["privilege-escalation"],
+    "notes": []
+  },
+  "groups": [
+    {
+      "title": "Low-cost signals",
+      "items": [
+        { "id": "pe-1", "text": "sudo -l (if available) before exotic kernel exploits." },
+        { "id": "pe-2", "text": "Enumerate capabilities and classic SUID binaries." }
+      ]
+    },
+    {
+      "title": "Validate primitives",
+      "items": [
+        { "id": "pe-3", "text": "For each candidate, name the exact primitive: read/write/exec/bind." },
+        { "id": "pe-4", "text": "Prove impact with minimal commands; then document the chain." }
+      ]
+    },
+    {
+      "title": "Close the loop",
+      "items": [
+        { "id": "pe-5", "text": "Remove artifacts; note what a defender could have seen." }
+      ]
+    }
+  ]
+}

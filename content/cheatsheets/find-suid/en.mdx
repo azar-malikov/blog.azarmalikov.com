@@ -1,0 +1,21 @@
+---
+title: 'find: SUID/SGID discovery'
+updatedAt: '2025-02-01'
+---
+
+## SUID
+
+```bash
+find / -perm -4000 -type f 2>/dev/null
+```
+
+## SGID
+
+```bash
+find / -perm -2000 -type f 2>/dev/null
+```
+
+## Notes
+
+- Noise is normal; focus on **unexpected binaries** for the environment.
+- Pair with `strings` / package ownership checks when something looks out of profile.

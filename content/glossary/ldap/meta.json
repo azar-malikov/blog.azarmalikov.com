@@ -1,0 +1,17 @@
+{
+  "slug": "ldap",
+  "keyword": "LDAP",
+  "category": "identity",
+  "aliases": ["Lightweight Directory Access Protocol"],
+  "relatedTools": ["ldapsearch", "ldapdomaindump"],
+  "relatedTechniques": ["T1087"],
+  "links": {
+    "writeups": ["ad-enumeration-basics"],
+    "cheatsheets": ["ldap-filter-tricks"],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

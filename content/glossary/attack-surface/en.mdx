@@ -1,0 +1,15 @@
+---
+title: 'Attack surface'
+shortDefinition: 'The set of reachable interfaces, identities, and trust edges an adversary can interact with.'
+updatedAt: '2025-03-01'
+---
+
+Attack surface is not “how big the internet is.” It is a **boundary statement**: given a scope and a model of the system, what can be touched without already being trusted?
+
+Good surface analysis is conservative. It prefers explicit lists (hosts, ports, identities, delegation edges) over vibes. When you expand the model, the surface expands—often suddenly.
+
+---
+
+## Practical use
+
+When prioritizing fixes, compare surface reduction to control strength: shrinking reachable paths is often cheaper than perfecting monitoring on an enormous perimeter.

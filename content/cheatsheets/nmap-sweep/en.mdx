@@ -1,0 +1,21 @@
+---
+title: 'Nmap: disciplined discovery sweeps'
+updatedAt: '2025-02-01'
+---
+
+## Ping sweep (when ICMP is meaningful)
+
+```bash
+nmap -sn 10.10.10.0/24
+```
+
+## Top ports, reasonable timing
+
+```bash
+nmap -sS -T4 --top-ports 1000 10.10.10.5
+```
+
+## Notes
+
+- Treat output as **hypotheses**—services can be filtered, spoofed, or hidden behind redirectors.
+- If you need version intel, do it in a second pass with narrower targets.

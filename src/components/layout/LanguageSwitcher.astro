@@ -1,0 +1,41 @@
+---
+import type { Locale } from '@/lib/constants';
+import { LOCALE_LABELS, SITE } from '@/lib/constants';
+import { stripLocalePrefix } from '@/lib/paths';
+
+interface Props {
+  lang: Locale;
+  path: string;
+}
+
+const { lang, path } = Astro.props;
+const { path: withoutLocale } = stripLocalePrefix(path);
+const suffix = withoutLocale === '/' ? '' : withoutLocale;
+
+const locales = SITE.publicLocales;
+---
+
+<div class="relative">
+  <label class="sr-only" for="lang-select">Language</label>
+  <select
+    id="lang-select"
+    class="h-9 max-w-[11rem] rounded-md border border-line/50 bg-canvas-muted/40 px-2.5 font-mono text-[11px] font-medium text-ink outline-none transition hover:border-signal/40 md:text-xs"
+  >
+    {
+      locales.map((l) => (
+        <option value={l} selected={l === lang}>
+          {LOCALE_LABELS[l]}
+        </option>
+      ))
+    }
+  </select>
+</div>
+
+<script is:inline define:vars={{ suffix: suffix }}>
+  const sel = document.getElementById('lang-select');
+  sel?.addEventListener('change', () => {
+    const next = sel.value;
+    const target = `/${next}${suffix}`;
+    window.location.href = target;
+  });
+</script>

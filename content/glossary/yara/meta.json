@@ -1,0 +1,17 @@
+{
+  "slug": "yara",
+  "keyword": "YARA",
+  "category": "detection",
+  "aliases": [],
+  "relatedTools": ["yara", "scanner integrations"],
+  "relatedTechniques": ["T1049"],
+  "links": {
+    "writeups": [],
+    "cheatsheets": [],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

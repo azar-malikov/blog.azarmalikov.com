@@ -1,0 +1,20 @@
+---
+title: 'ldapsearch: LDAP filter sketches'
+updatedAt: '2025-01-25'
+---
+
+## Users
+
+```bash
+ldapsearch -x -H ldap://dc01.lab.local -D "user@lab.local" -w '***' -b "DC=lab,DC=local" "(&(objectClass=user)(objectCategory=person))" sAMAccountName
+```
+
+## Groups
+
+```bash
+ldapsearch -x -H ldap://dc01.lab.local -D "user@lab.local" -w '***' -b "DC=lab,DC=local" "(objectClass=group)" cn member
+```
+
+## Notes
+
+- Filters are **questions**—tighten the question before widening the query.

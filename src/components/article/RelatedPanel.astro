@@ -1,0 +1,30 @@
+---
+interface LinkItem {
+  href: string;
+  title: string;
+  kind: string;
+}
+
+interface Props {
+  title: string;
+  items: LinkItem[];
+}
+
+const { title, items } = Astro.props;
+---
+
+{items.length > 0 ? (
+  <section class="mt-12 rounded-2xl border border-line/60 bg-canvas-muted/40 p-6">
+    <h2 class="text-xs font-semibold uppercase tracking-[0.22em] text-ink-faint">{title}</h2>
+    <ul class="mt-4 space-y-3 text-sm">
+      {items.map((it) => (
+        <li>
+          <a class="link-underline text-ink" href={it.href}>
+            <span class="text-ink-faint">{it.kind} · </span>
+            {it.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+) : null}

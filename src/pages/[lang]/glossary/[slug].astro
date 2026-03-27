@@ -1,0 +1,68 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TranslationBanner from '@/components/article/TranslationBanner.astro';
+import RelatedPanel from '@/components/article/RelatedPanel.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { jsonLdArticle } from '@/lib/seo';
+import { getAllGlossary, getGlossaryBySlug } from '@/lib/content/glossary';
+import { getWriteupBySlug } from '@/lib/content/writeups';
+import { getCheatById } from '@/lib/content/cheatsheets';
+
+export function getStaticPaths() {
+  return getAllGlossary().map((g) => ({ params: { lang: g.locale, slug: g.slug } }));
+}
+
+const { lang: raw, slug: rawSlug } = Astro.params;
+if (!isLocale(raw ?? '') || !rawSlug) throw new Error('Invalid params');
+const lang = raw as Locale;
+const entry = getGlossaryBySlug(rawSlug, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const jsonLd = jsonLdArticle({
+  title: entry.meta.keyword,
+  description: entry.fm.shortDefinition,
+  canonicalPath: path,
+  locale: lang,
+  type: 'article'
+});
+
+const related: { href: string; title: string; kind: string }[] = [];
+for (const w of entry.meta.links?.writeups ?? []) {
+  const we = getWriteupBySlug(w, lang);
+  if (we) related.push({ kind: 'Writeup', title: we.fm.title, href: `/${lang}/writeups/${w}/` });
+}
+for (const c of entry.meta.links?.cheatsheets ?? []) {
+  const ce = getCheatById(c, lang);
+  if (ce) related.push({ kind: 'Cheat sheet', title: ce.meta.title, href: `/${lang}/cheatsheets/${c}/` });
+}
+
+const alternates: Partial<Record<Locale, string>> = {};
+for (const g of getAllGlossary().filter((x) => x.slug === entry.slug)) {
+  alternates[g.locale] = `/${g.locale}/glossary/${g.slug}/`;
+}
+
+const { Content } = entry;
+---
+
+<BaseLayout title={entry.meta.keyword} description={entry.fm.shortDefinition} lang={lang} path={path} jsonLd={jsonLd}>
+  <article class="mx-auto max-w-content">
+    <TranslationBanner lang={lang} stale={entry.stale} alternates={alternates} />
+
+    <header class="max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-ink-faint">{t(lang, 'glossary.term')}</p>
+      <h1 class="mt-4 font-display text-display-xl text-ink">{entry.meta.keyword}</h1>
+      <p class="mt-4 text-xl text-ink-muted">{entry.fm.shortDefinition}</p>
+      {entry.meta.aliases?.length ? (
+        <p class="mt-4 text-sm text-ink-faint">Also known as: {entry.meta.aliases.join(', ')}</p>
+      ) : null}
+    </header>
+
+    <div class="prose-article mt-10 max-w-measure">
+      <Content />
+    </div>
+
+    <RelatedPanel title={t(lang, 'common.related')} items={related} />
+  </article>
+</BaseLayout>

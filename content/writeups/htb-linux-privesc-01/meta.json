@@ -1,0 +1,42 @@
+{
+  "slug": "htb-linux-privesc-01",
+  "target": "HTB-style Linux host (fictionalized)",
+  "platform": "Linux · x64",
+  "difficulty": "intermediate",
+  "category": "lab",
+  "tags": ["privilege escalation", "capabilities", "SUID"],
+  "status": "complete",
+  "estimatedMinutes": 35,
+  "author": {
+    "name": "Azar Malikov",
+    "role": "Operator"
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": {
+      "en": "source",
+      "az": "missing",
+      "tr": "missing",
+      "ru": "missing"
+    }
+  },
+  "visibility": "public",
+  "tools": ["bash", "find", "getcap", "curl"],
+  "techniques": ["T1548.001", "credential reuse"],
+  "stageOrder": ["recon", "foothold", "privesc", "cleanup", "detection"],
+  "stageLabels": {
+    "recon": "Reconnaissance",
+    "foothold": "Enumeration",
+    "privesc": "Privilege escalation",
+    "cleanup": "Cleanup",
+    "detection": "Detection opportunities"
+  },
+  "links": {
+    "cheatsheets": ["find-suid", "getcap"],
+    "glossary": ["privilege-escalation"],
+    "notes": [],
+    "checklists": ["pe-linux"],
+    "snippets": ["snippet-cap-check"]
+  },
+  "disclaimer": "This writeup is educational. Only test systems you own or are authorized to assess."
+}

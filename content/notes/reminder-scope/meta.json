@@ -1,0 +1,11 @@
+{
+  "id": "reminder-scope",
+  "title": "Reminder: scope beats cleverness",
+  "tags": ["ethics", "methodology"],
+  "mood": "reminder",
+  "visibility": "public",
+  "links": {
+    "blog": [],
+    "glossary": ["opsec"]
+  }
+}

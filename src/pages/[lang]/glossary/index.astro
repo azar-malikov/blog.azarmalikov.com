@@ -1,0 +1,68 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+import { listGlossaryForLocale } from '@/lib/content/glossary';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+const path = Astro.url.pathname;
+const items = listGlossaryForLocale(lang);
+const byLetter = new Map<string, typeof items>();
+for (const it of items) {
+  const letter = it.meta.keyword[0]?.toUpperCase() ?? '#';
+  if (!byLetter.has(letter)) byLetter.set(letter, []);
+  byLetter.get(letter)!.push(it);
+}
+const letters = [...byLetter.keys()].sort();
+---
+
+<BaseLayout title={t(lang, 'nav.glossary')} description="Cyber keywords with relationships." lang={lang} path={path}>
+  <header class="mb-12 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Glossary</p>
+    <h1 class="mt-3 font-display text-display-xl text-ink">{t(lang, 'nav.glossary')}</h1>
+    <p class="mt-4 text-lg text-ink-muted">A living dictionary: terms link outward to writeups, cheat sheets, and notes.</p>
+  </header>
+
+  <div class="flex flex-wrap gap-2">
+    {letters.map((l) => (
+      <a class="rounded-full border border-line/70 bg-canvas-elevated px-3 py-1 text-sm" href={`#letter-${l}`}>
+        {l}
+      </a>
+    ))}
+  </div>
+
+  <div class="mt-12 space-y-12">
+    {
+      letters.map((l) => (
+        <section id={`letter-${l}`}>
+          <h2 class="font-display text-3xl text-ink">{l}</h2>
+          <div class="mt-6 grid gap-4 md:grid-cols-2">
+            {byLetter.get(l)!.map((g) => (
+              <a
+                href={`/${lang}/glossary/${g.slug}/`}
+                class="rounded-2xl border border-line/60 bg-canvas-elevated/80 p-5 transition hover:border-accent/40"
+              >
+                <p class="text-xs text-ink-faint">{g.meta.category}</p>
+                <p class="mt-2 font-display text-xl text-ink">{g.meta.keyword}</p>
+                <p class="mt-2 text-sm text-ink-muted">{g.fm.shortDefinition}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  {items.length === 0 ? (
+    <p class="rounded-2xl border border-dashed border-line/60 bg-canvas-muted/30 p-8 text-sm text-ink-muted">
+      No glossary entries for this locale yet.
+    </p>
+  ) : null}
+</BaseLayout>

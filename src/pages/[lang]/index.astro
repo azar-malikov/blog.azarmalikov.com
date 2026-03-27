@@ -1,0 +1,220 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StudioMasthead from '@/components/studio/StudioMasthead.astro';
+import KnowledgeRibbon from '@/components/studio/KnowledgeRibbon.astro';
+import ViewModeBar from '@/components/home/ViewModeBar.astro';
+import CardLink from '@/components/ui/CardLink.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+import { localizedPath } from '@/lib/paths';
+import { listBlogForLocale } from '@/lib/content/blog';
+import { listWriteupsForLocale } from '@/lib/content/writeups';
+import { listCheatsForLocale } from '@/lib/content/cheatsheets';
+import { listGlossaryForLocale } from '@/lib/content/glossary';
+import { listNotesForLocale } from '@/lib/content/notes';
+import { getAllChecklists } from '@/lib/content/checklists';
+import { getAllSnippets } from '@/lib/content/snippets';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+
+const path = Astro.url.pathname;
+const blogs = listBlogForLocale(lang).slice(0, 4);
+const featured = listBlogForLocale(lang).filter((b) => b.meta.featured).slice(0, 3);
+const writeups = listWriteupsForLocale(lang).slice(0, 2);
+const cheats = listCheatsForLocale(lang).slice(0, 5);
+const gloss = listGlossaryForLocale(lang).slice(0, 8);
+const categories = Array.from(
+  new Set(listBlogForLocale(lang).flatMap((b) => b.meta.category))
+).slice(0, 8);
+
+const counts = {
+  blog: listBlogForLocale(lang).length,
+  writeups: listWriteupsForLocale(lang).length,
+  cheatsheets: listCheatsForLocale(lang).length,
+  glossary: listGlossaryForLocale(lang).length,
+  checklists: getAllChecklists().length,
+  notes: listNotesForLocale(lang).length,
+  snippets: getAllSnippets().length
+};
+---
+
+<BaseLayout title={SITE.title} description={t(lang, 'home.hero.lead')} lang={lang} path={path}>
+  <StudioMasthead lang={lang} />
+
+  <KnowledgeRibbon lang={lang} counts={counts} />
+
+  <ViewModeBar lang={lang} />
+
+  <section class="mt-16 border-t border-line/40 pt-8">
+    <div class="studio-rule mb-10"></div>
+    <figure class="mx-auto max-w-3xl border-l-2 border-signal/40 pl-6 md:pl-8">
+      <blockquote class="font-display text-2xl text-ink md:text-3xl">
+        {t(lang, 'home.strip.quote')}
+      </blockquote>
+      <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-wider text-ink-faint">Editorial</figcaption>
+    </figure>
+  </section>
+
+  <section class="mt-20" aria-labelledby="featured-heading">
+    <div class="flex flex-col gap-4 border-b border-line/50 pb-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 id="featured-heading" class="font-display text-3xl text-ink md:text-4xl">{t(lang, 'common.featured')}</h2>
+        <p class="mt-2 font-body text-sm text-ink-muted">{t(lang, 'common.continueReading')}</p>
+      </div>
+      <a
+        class="font-ui text-sm font-semibold text-signal hover:text-ink"
+        href={localizedPath(lang, '/blog')}>{t(lang, 'nav.blog')}</a
+      >
+    </div>
+    <div class="mt-2 divide-y divide-line/40">
+      {
+        featured.map((b) => (
+          <CardLink
+            href={`/${lang}/blog/${b.slug}/`}
+            title={b.fm.title}
+            description={b.fm.description}
+            meta={b.fm.publishedAt}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-20 grid gap-8 lg:grid-cols-2">
+    <div>
+      <div class="flex items-end justify-between gap-4 border-b border-line/50 pb-4">
+        <h2 class="font-display text-2xl text-ink">{t(lang, 'common.latest')}</h2>
+        <a class="font-mono text-xs text-signal hover:text-ink" href={localizedPath(lang, '/blog')}>→</a>
+      </div>
+      <div class="divide-y divide-line/40">
+        {
+          blogs.map((b) => (
+            <a
+              href={`/${lang}/blog/${b.slug}/`}
+              class="studio-index-row block py-5 transition hover:bg-canvas-muted/30"
+            >
+              <p class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{b.fm.publishedAt}</p>
+              <p class="mt-1 font-display text-lg text-ink">{b.fm.title}</p>
+              <p class="mt-2 font-body text-sm text-ink-muted">{b.fm.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <div>
+      <div class="flex items-end justify-between gap-4 border-b border-line/50 pb-4">
+        <h2 class="font-display text-2xl text-ink">{t(lang, 'nav.writeups')}</h2>
+        <a class="font-mono text-xs text-signal hover:text-ink" href={localizedPath(lang, '/writeups')}>→</a>
+      </div>
+      <div class="divide-y divide-line/40">
+        {
+          writeups.map((w) => (
+            <a
+              href={`/${lang}/writeups/${w.slug}/`}
+              class="studio-index-row block py-5 transition hover:bg-canvas-muted/30"
+            >
+              <p class="font-mono text-[10px] uppercase tracking-wider text-ink-faint">{w.meta.target}</p>
+              <p class="mt-1 font-display text-lg text-ink">{w.fm.title}</p>
+              <p class="mt-2 font-body text-sm text-ink-muted">{w.fm.description}</p>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-20" aria-labelledby="cheats-heading">
+    <div class="flex flex-col gap-4 border-b border-line/50 pb-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 id="cheats-heading" class="font-display text-3xl text-ink md:text-4xl">{t(lang, 'nav.cheatsheets')}</h2>
+        <p class="mt-2 font-body text-sm text-ink-muted">{t(lang, 'common.continueStudying')}</p>
+      </div>
+      <a class="font-ui text-sm font-semibold text-signal hover:text-ink" href={localizedPath(lang, '/cheatsheets')}>→</a>
+    </div>
+    <div class="mt-2 divide-y divide-line/40">
+      {
+        cheats.map((c) => (
+          <CardLink
+            href={`/${lang}/cheatsheets/${c.id}/`}
+            title={c.meta.title}
+            description={c.meta.shortDescription}
+            meta={c.meta.category}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-20">
+    <div class="flex flex-col gap-4 border-b border-line/50 pb-6 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h2 class="font-display text-3xl text-ink md:text-4xl">{t(lang, 'nav.glossary')}</h2>
+        <p class="mt-2 font-body text-sm text-ink-muted">{t(lang, 'common.continueReading')}</p>
+      </div>
+      <a class="font-ui text-sm font-semibold text-signal hover:text-ink" href={localizedPath(lang, '/glossary')}>→</a>
+    </div>
+    <div class="mt-6 flex flex-wrap gap-2">
+      {
+        gloss.map((g) => (
+          <a
+            class="border border-line/50 bg-canvas-elevated/80 px-3 py-1.5 font-mono text-xs text-ink-muted transition hover:border-signal/40 hover:text-ink"
+            href={`/${lang}/glossary/${g.slug}/`}
+          >
+            {g.meta.keyword}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-16">
+    <div class="flex items-end justify-between gap-4 border-b border-line/50 pb-4">
+      <h2 class="font-display text-2xl text-ink">{t(lang, 'categories.title')}</h2>
+      <a class="font-mono text-xs text-signal hover:text-ink" href={localizedPath(lang, '/categories')}>→</a>
+    </div>
+    <div class="mt-6 flex flex-wrap gap-2">
+      {
+        categories.map((c) => (
+          <a
+            class="border border-dashed border-line/60 px-3 py-1.5 font-ui text-xs font-semibold uppercase tracking-wider text-ink-muted transition hover:border-signal/50 hover:text-ink"
+            href={localizedPath(lang, '/categories')}
+          >
+            {c}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="mt-20 border border-line/50 bg-canvas-muted/20 px-6 py-10 md:px-10 md:py-12">
+    <h2 class="font-display text-3xl text-ink md:text-4xl">{t(lang, 'home.cta.title')}</h2>
+    <p class="mt-5 max-w-2xl font-body text-sm leading-relaxed text-ink-muted md:text-base">{t(lang, 'home.cta.body')}</p>
+    <div class="mt-8 flex flex-wrap gap-4 font-ui text-sm font-semibold">
+      <a
+        href={localizedPath(lang, '/cheatsheets')}
+        class="text-ink underline decoration-signal/50 decoration-2 underline-offset-4 hover:decoration-signal"
+        >{t(lang, 'nav.cheatsheets')}</a
+      >
+      <span class="text-ink-faint" aria-hidden="true">·</span>
+      <a
+        href={localizedPath(lang, '/checklists')}
+        class="text-ink underline decoration-line/40 decoration-2 underline-offset-4 hover:decoration-signal"
+        >{t(lang, 'nav.checklists')}</a
+      >
+      <span class="text-ink-faint" aria-hidden="true">·</span>
+      <a
+        href={localizedPath(lang, '/notes')}
+        class="text-ink underline decoration-line/40 decoration-2 underline-offset-4 hover:decoration-signal"
+        >{t(lang, 'nav.notes')}</a
+      >
+    </div>
+  </section>
+</BaseLayout>

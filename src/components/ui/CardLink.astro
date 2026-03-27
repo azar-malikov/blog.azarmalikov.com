@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  meta?: string;
+}
+
+const { href, title, description, meta } = Astro.props;
+---
+
+<a href={href} class="studio-index-row block">
+  <div class="flex w-full flex-col gap-1 md:flex-row md:items-baseline md:justify-between md:gap-8">
+    <div class="min-w-0 flex-1">
+      {meta ? <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-ink-faint">{meta}</p> : null}
+      <h3 class="mt-1 font-display text-xl text-ink group-hover:text-signal md:text-2xl">{title}</h3>
+      {description ? <p class="mt-2 max-w-2xl font-body text-sm leading-relaxed text-ink-muted">{description}</p> : null}
+    </div>
+    <span class="inline-flex shrink-0 font-mono text-xs text-signal/80 transition group-hover:text-signal md:pt-6">→</span>
+  </div>
+</a>

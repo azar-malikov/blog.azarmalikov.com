@@ -1,0 +1,26 @@
+{
+  "slug": "telemetry-contracts",
+  "category": ["blue team"],
+  "tags": ["telemetry", "SOC", "detection engineering"],
+  "featured": false,
+  "series": null,
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": {
+      "en": "source",
+      "az": "missing",
+      "tr": "missing",
+      "ru": "missing"
+    }
+  },
+  "visibility": "public",
+  "author": {
+    "name": "Azar Malikov",
+    "role": "Security researcher"
+  },
+  "links": {
+    "glossary": ["sigma-rule"],
+    "cheatsheets": [],
+    "notes": []
+  }
+}

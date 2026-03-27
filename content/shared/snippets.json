@@ -1,0 +1,28 @@
+{
+  "snippets": [
+    {
+      "id": "snippet-cap-check",
+      "title": "Recursive capability scan (quiet failures suppressed)",
+      "lang": "bash",
+      "body": "getcap -r / 2>/dev/null",
+      "tags": ["linux", "capabilities"],
+      "usedIn": [{ "writeupSlug": "htb-linux-privesc-01", "cheatId": "getcap" }]
+    },
+    {
+      "id": "snippet-journal-since",
+      "title": "Journal window with ISO timestamps",
+      "lang": "bash",
+      "body": "journalctl -u ssh --since \"2 hours ago\" -o short-iso",
+      "tags": ["linux", "dfir"],
+      "usedIn": [{ "cheatId": "journalctl" }]
+    },
+    {
+      "id": "snippet-ldap-user-membership",
+      "title": "LDAP user + memberOf pull (sketch)",
+      "lang": "bash",
+      "body": "ldapsearch -x -H ldap://dc01.lab.local -D 'user@lab.local' -w '***' -b 'DC=lab,DC=local' '(objectClass=user)' sAMAccountName memberOf",
+      "tags": ["active directory"],
+      "usedIn": [{ "writeupSlug": "ad-enumeration-basics" }]
+    }
+  ]
+}

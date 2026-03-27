@@ -1,0 +1,29 @@
+{
+  "id": "reporting-quality",
+  "title": "Incident / lab reporting checklist",
+  "description": "Make outputs reproducible: claims tied to evidence, steps tied to scope.",
+  "category": "process",
+  "tags": ["reporting", "communication"],
+  "links": {
+    "writeups": [],
+    "cheatsheets": [],
+    "glossary": [],
+    "notes": []
+  },
+  "groups": [
+    {
+      "title": "Evidence discipline",
+      "items": [
+        { "id": "r-1", "text": "Every claim links to a command output, log line, or file hash." },
+        { "id": "r-2", "text": "Separate observation from interpretation explicitly." }
+      ]
+    },
+    {
+      "title": "Reader experience",
+      "items": [
+        { "id": "r-3", "text": "A stranger can reproduce the core path without private context." },
+        { "id": "r-4", "text": "Risk notes include plausible impact and plausible detection." }
+      ]
+    }
+  ]
+}

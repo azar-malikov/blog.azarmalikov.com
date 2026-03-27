@@ -1,0 +1,38 @@
+---
+title: 'Təhdid modeli: intizamlı təxəyyul kimi'
+description: 'Risk müzakirələrini teatr olmadan yoxlanıla bilən təhlükəsizlik iddialarına çevirmək üçün praktik çərçivə.'
+publishedAt: '2025-03-02'
+updatedAt: '2025-03-02'
+---
+
+import Callout from '@/components/mdx/Callout.astro';
+
+Əksər komandalar alətlər çatışmazlığına görə uğursuz olmur. Onlar reallığı sloqanlarla danışırlar: “təhlükəsizik”, “ən yaxşı praktikalara əməl edirik”, “tezliklə yamaqlayacağıq.” Təhdid modeli əks hərəkətdir: **fərziyyələri adlandırmaq**, **nəticələri izləmək** və **növbəti nəyi yoxlamağı seçmək** üsuludur.
+
+## Model nədir (və nə deyil)
+
+Təhdid modeli diaqram yarışı deyil. Minimumda o, üç suala strukturlaşdırılmış cavabdır:
+
+1. Nəyi qoruyuruq?
+2. Kimin marağı ola bilər və niyə?
+3. Sistem realda necə qurulubsa, hansı uğursuzluqlar realistdir?
+
+Əgər modelinizi sübutlar təkzib edə bilmirsə, bu model deyil—əhval-ruhiyyə lövhəsidir.
+
+<Callout title="Operator vərdişi" variant="note">
+  Arxitektura nəzərdən keçirərkən “yalan olsa ağrıyacaq iddialar” siyahısı aparın. Bu siyahı sizin test planınız olur.
+</Callout>
+
+## Narrativdən yoxlamalara
+
+Model ilə mühəndislik işi arasında körpü **izlenebilirlikdir**. Hər təhdid ssenarisi bunlara bağlanmalıdır:
+
+- mövcud olduğuna inandığınız **nəzarət**,
+- uğursuzluğu üzə çıxaracaq **siqnal**,
+- və o siqnalı mühitinizdə təhlükəsiz müşahidə etmək üçün **metod**.
+
+Bu, redaksiya intizamını ofensiv zanaətlə birləşdirir: mübahisəni abstraksiyada deyil, təsdiqlənə bilən yoxlamalarda aparırsınız.
+
+## Yekun fikir
+
+Təhdid modeli hər pozuntunu proqnozlaşdırmaq deyil. Naməlumları sıfır kimi göstərməyi rədd etməkdir. Məqsəd qeyri-müəyyənlik altında daha sakit qərarlar və analizdən əmələ daha təmiz xəttdir.

@@ -1,0 +1,85 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import StageNav from '@/components/writeups/StageNav.astro';
+import ShareBar from '@/components/article/ShareBar.astro';
+import RelatedPanel from '@/components/article/RelatedPanel.astro';
+import Callout from '@/components/mdx/Callout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { absoluteUrl, jsonLdArticle } from '@/lib/seo';
+import { getAllWriteups, getWriteupBySlug } from '@/lib/content/writeups';
+import { relatedFromWriteup } from '@/lib/relations';
+
+export function getStaticPaths() {
+  return getAllWriteups().map((w) => ({ params: { lang: w.locale, slug: w.slug } }));
+}
+
+const { lang: raw, slug: rawSlug } = Astro.params;
+if (!isLocale(raw ?? '') || !rawSlug) throw new Error('Invalid params');
+const lang = raw as Locale;
+const slug = rawSlug;
+const entry = getWriteupBySlug(slug, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const related = relatedFromWriteup(entry, lang);
+const stageOrder = entry.meta.stageOrder ?? [];
+const labels = entry.meta.stageLabels ?? {};
+
+const jsonLd = jsonLdArticle({
+  title: entry.fm.title,
+  description: entry.fm.description,
+  canonicalPath: path,
+  locale: lang,
+  ogImage: entry.meta.coverImage,
+  type: 'article',
+  publishedTime: entry.fm.publishedAt,
+  modifiedTime: entry.fm.updatedAt ?? entry.fm.publishedAt,
+  author: entry.meta.author.name
+});
+
+const { Content } = entry;
+---
+
+<BaseLayout
+  title={entry.fm.title}
+  description={entry.fm.description}
+  lang={lang}
+  path={path}
+  ogImage={entry.meta.coverImage}
+  jsonLd={jsonLd}
+>
+  <article class="mx-auto max-w-content">
+    <header class="max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-ink-faint">{t(lang, 'nav.writeups')}</p>
+      <h1 class="mt-4 font-display text-display-xl text-ink">{entry.fm.title}</h1>
+      <p class="mt-4 text-lg text-ink-muted">{entry.fm.description}</p>
+      <div class="mt-6 flex flex-wrap gap-4 text-sm text-ink-muted">
+        <span>{t(lang, 'writeups.lab')}: {entry.meta.target}</span>
+        <span>·</span>
+        <span>{entry.meta.platform}</span>
+        <span>·</span>
+        <span>{entry.readingMinutes} min</span>
+      </div>
+    </header>
+
+    {entry.meta.disclaimer ? (
+      <Callout title={t(lang, 'writeups.disclaimer')} variant="ethics">
+        {entry.meta.disclaimer}
+      </Callout>
+    ) : null}
+
+    <div class:list={['mt-10 grid items-start gap-10', stageOrder.length > 0 ? 'lg:grid-cols-[240px_1fr]' : '']}>
+      {stageOrder.length ? <StageNav lang={lang} stageOrder={stageOrder} labels={labels} /> : null}
+      <div class="min-w-0">
+        <div class="prose-article max-w-measure print:max-w-none">
+          <Content />
+        </div>
+      </div>
+    </div>
+
+    <RelatedPanel title={t(lang, 'common.related')} items={related} />
+
+    <ShareBar lang={lang} urlPath={path} title={entry.fm.title} />
+  </article>
+</BaseLayout>

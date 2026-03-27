@@ -1,0 +1,15 @@
+{
+  "id": "ldap-filter-tricks",
+  "title": "ldapsearch: LDAP filter sketches",
+  "shortDescription": "Reusable LDAP filter patterns for common directory questions.",
+  "category": "active directory",
+  "tags": ["ldap", "enumeration"],
+  "sourceTool": "ldapsearch",
+  "platform": ["linux", "macos", "windows"],
+  "links": {
+    "writeups": ["ad-enumeration-basics"],
+    "glossary": ["ldap"],
+    "snippets": ["snippet-ldap-user-membership"]
+  },
+  "promotedFrom": [{ "writeupSlug": "ad-enumeration-basics", "stageId": "ldap" }]
+}

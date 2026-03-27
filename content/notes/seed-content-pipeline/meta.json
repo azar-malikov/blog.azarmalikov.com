@@ -1,0 +1,11 @@
+{
+  "id": "seed-content-pipeline",
+  "title": "Content pipeline idea: promote snippets from writeups",
+  "tags": ["platform", "workflow"],
+  "mood": "seed",
+  "visibility": "public",
+  "links": {
+    "blog": ["telemetry-contracts"],
+    "glossary": ["sigma-rule"]
+  }
+}

@@ -1,0 +1,20 @@
+---
+title: 'Kerberos client checks (lab-friendly)'
+updatedAt: '2025-01-25'
+---
+
+## Windows: list tickets
+
+```powershell
+klist
+```
+
+## Linux: request TGT
+
+```bash
+kinit user@LAB.LOCAL
+```
+
+## Notes
+
+- If you are “randomly failing,” verify **time sync** and **realm case** before exotic attacks.

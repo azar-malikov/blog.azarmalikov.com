@@ -1,0 +1,15 @@
+{
+  "id": "kerberos-clients",
+  "title": "Kerberos client checks (lab-friendly)",
+  "shortDescription": "Minimal commands to validate ticket behavior and naming sanity.",
+  "category": "active directory",
+  "tags": ["kerberos", "windows"],
+  "sourceTool": "klist / kinit",
+  "platform": ["windows", "linux"],
+  "links": {
+    "writeups": ["ad-enumeration-basics"],
+    "glossary": ["kerberos"],
+    "snippets": []
+  },
+  "promotedFrom": []
+}

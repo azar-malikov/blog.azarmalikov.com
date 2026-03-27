@@ -1,0 +1,17 @@
+{
+  "slug": "mitre-attack",
+  "keyword": "MITRE ATT&CK",
+  "category": "frameworks",
+  "aliases": ["ATT&CK"],
+  "relatedTools": ["navigator", "mapping spreadsheets"],
+  "relatedTechniques": [],
+  "links": {
+    "writeups": [],
+    "cheatsheets": [],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

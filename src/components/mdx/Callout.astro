@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant?: 'note' | 'warn' | 'ethics';
+  title?: string;
+}
+
+const { variant = 'note', title } = Astro.props;
+
+const styles: Record<NonNullable<Props['variant']>, string> = {
+  note: 'border-line/70 bg-canvas-elevated/70',
+  warn: 'border-warn/40 bg-warn/5',
+  ethics: 'border-accent/30 bg-accent/5'
+};
+---
+
+<aside class:list={['rounded-2xl border p-5', styles[variant]]}>
+  {title ? <p class="mb-2 text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">{title}</p> : null}
+  <div class="prose-article text-sm">
+    <slot />
+  </div>
+</aside>

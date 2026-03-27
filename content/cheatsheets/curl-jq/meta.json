@@ -1,0 +1,15 @@
+{
+  "id": "curl-jq",
+  "title": "curl + jq: JSON triage",
+  "shortDescription": "Fast extraction patterns for JSON APIs and misconfigurations.",
+  "category": "web",
+  "tags": ["curl", "jq", "api"],
+  "sourceTool": "curl / jq",
+  "platform": ["linux", "macos", "windows"],
+  "links": {
+    "writeups": [],
+    "glossary": [],
+    "snippets": []
+  },
+  "promotedFrom": []
+}

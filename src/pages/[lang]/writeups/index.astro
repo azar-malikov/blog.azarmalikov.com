@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+import { listWriteupsForLocale } from '@/lib/content/writeups';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+const path = Astro.url.pathname;
+const items = listWriteupsForLocale(lang);
+---
+
+<BaseLayout title={t(lang, 'nav.writeups')} description="Structured lab narratives and analysis." lang={lang} path={path}>
+  <header class="mb-12 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Writeups</p>
+    <h1 class="mt-3 font-display text-display-xl text-ink">{t(lang, 'nav.writeups')}</h1>
+    <p class="mt-4 text-lg text-ink-muted">
+      Progression-aware stages, operator notes, and defensive hooks—designed for study and review.
+    </p>
+  </header>
+
+  <div class="space-y-6">
+    {
+      items.map((w) => (
+        <a
+          href={`/${lang}/writeups/${w.slug}/`}
+          class="block rounded-2xl border border-line/60 bg-canvas-elevated/80 p-6 transition hover:border-accent/40"
+        >
+          <div class="flex flex-wrap items-center gap-3 text-xs text-ink-faint">
+            <span>{w.meta.platform}</span>
+            <span>·</span>
+            <span>{w.meta.difficulty}</span>
+            <span>·</span>
+            <span>{w.meta.status}</span>
+          </div>
+          <h2 class="mt-3 font-display text-2xl text-ink">{w.fm.title}</h2>
+          <p class="mt-2 text-sm text-ink-muted">{w.fm.description}</p>
+          <p class="mt-3 text-xs text-ink-faint">{t(lang, 'writeups.lab')}: {w.meta.target}</p>
+        </a>
+      ))
+    }
+  </div>
+
+  {items.length === 0 ? (
+    <p class="rounded-2xl border border-dashed border-line/60 bg-canvas-muted/30 p-8 text-sm text-ink-muted">
+      No writeups for this locale yet.
+    </p>
+  ) : null}
+</BaseLayout>

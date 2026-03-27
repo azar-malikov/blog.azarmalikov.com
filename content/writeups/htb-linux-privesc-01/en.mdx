@@ -1,0 +1,60 @@
+---
+title: 'Linux privilege escalation via mis-scoped capabilities'
+description: 'A staged walkthrough: from low shell to root through capability misconfiguration—plus what a defender should see.'
+publishedAt: '2025-02-02'
+updatedAt: '2025-02-10'
+---
+
+import Stage from '@/components/mdx/Stage.astro';
+import Callout from '@/components/mdx/Callout.astro';
+import CommandBlock from '@/components/mdx/CommandBlock.astro';
+
+<Stage id="recon" title="Reconnaissance" summary="Confirm scope, map users, and inventory quick privilege hints without noisy scanning.">
+
+After obtaining a low-privilege shell, the goal is not “run every script on GitHub.” The goal is to **reduce uncertainty** with minimal footprint: who am I, what is writable, what binaries look unusual for this distro baseline?
+
+```bash
+id && hostname && uname -a
+```
+
+Then move to filesystem clues that age well: SUID binaries, capabilities, cron, systemd timers, and sudo policy—**in that order of signal quality** for many Linux labs.
+
+</Stage>
+
+<Stage id="foothold" title="Enumeration" summary="Find a stable next step: capability-backed binaries with excessive rights.">
+
+Capability enumeration is often faster than brute SUID hunting when admins “modernize” permissions.
+
+<CommandBlock title="capabilities">
+{`getcap -r / 2>/dev/null`}
+</CommandBlock>
+
+When output shows a binary with capabilities that imply dangerous primitives (for example, full read on sensitive paths), treat it like a sharp tool: verify assumptions before exploitation.
+
+</Stage>
+
+<Stage id="privesc" title="Privilege escalation" summary="Translate capability primitives into a controlled root shell.">
+
+The exact chain depends on the binary and capability set. The pattern is consistent:
+
+1. identify the primitive (read/write/bind),
+2. map it to a filesystem object that unlocks identity movement,
+3. validate with the smallest proof possible.
+
+<Callout variant="ethics" title="Ethics">
+  If you can escalate in two steps, prefer the quieter step first. Noise is a lesson too—just not the one you want in a real engagement without scope.
+</Callout>
+
+</Stage>
+
+<Stage id="cleanup" title="Cleanup" summary="Remove artifacts you introduced; leave the lab teachable for the next pass.">
+
+Remove dropped files, shell histories if policy requires, and restore test users if you created any. In learning environments, cleanliness is respect for your future self.
+
+</Stage>
+
+<Stage id="detection" title="Detection opportunities" summary="What should have appeared in logs or telemetry if monitoring existed?">
+
+Ask what signals would exist if someone repeated this path tomorrow: capability audits, unexpected binary execution from uncommon parents, and privileged file access patterns.
+
+</Stage>

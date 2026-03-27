@@ -1,0 +1,26 @@
+{
+  "slug": "journalctl-hunting",
+  "category": ["dfir"],
+  "tags": ["linux", "journalctl", "systemd", "timelines"],
+  "featured": true,
+  "series": null,
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": {
+      "en": "source",
+      "az": "missing",
+      "tr": "missing",
+      "ru": "missing"
+    }
+  },
+  "visibility": "public",
+  "author": {
+    "name": "Azar Malikov",
+    "role": "Security researcher"
+  },
+  "links": {
+    "glossary": ["indicator-of-compromise"],
+    "cheatsheets": ["journalctl"],
+    "notes": []
+  }
+}

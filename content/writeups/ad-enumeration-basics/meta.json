@@ -1,0 +1,41 @@
+{
+  "slug": "ad-enumeration-basics",
+  "target": "Synthetic AD lab (fictionalized)",
+  "platform": "Windows · Active Directory",
+  "difficulty": "intro",
+  "category": "lab",
+  "tags": ["active directory", "ldap", "kerberos", "bloodhound"],
+  "status": "complete",
+  "estimatedMinutes": 50,
+  "author": {
+    "name": "Azar Malikov",
+    "role": "Operator"
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": {
+      "en": "source",
+      "az": "missing",
+      "tr": "missing",
+      "ru": "missing"
+    }
+  },
+  "visibility": "public",
+  "tools": ["PowerShell", "ldapsearch", "nslookup"],
+  "techniques": ["T1087", "T1482"],
+  "stageOrder": ["recon", "ldap", "kerberos", "graph", "defensive"],
+  "stageLabels": {
+    "recon": "Reconnaissance",
+    "ldap": "LDAP orientation",
+    "kerberos": "Kerberos checkpoints",
+    "graph": "Graph-shaped thinking",
+    "defensive": "Defensive notes"
+  },
+  "links": {
+    "cheatsheets": ["ldap-filter-tricks", "kerberos-clients"],
+    "glossary": ["kerberos"],
+    "checklists": ["recon-windows-ad"],
+    "snippets": []
+  },
+  "disclaimer": "Educational content only. Use authorized labs and explicit written permission for real directories."
+}

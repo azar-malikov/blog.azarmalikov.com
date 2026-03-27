@@ -1,0 +1,25 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+const path = Astro.url.pathname;
+---
+
+<BaseLayout title={t(lang, 'privacy.title')} description="Privacy placeholder." lang={lang} path={path} noindex>
+  <header class="mb-8 max-w-3xl">
+    <h1 class="font-display text-display-lg text-ink">{t(lang, 'privacy.title')}</h1>
+    <p class="mt-4 text-ink-muted">Placeholder policy page. Replace with your finalized legal text.</p>
+  </header>
+  <div class="prose-article max-w-measure text-ink-muted">
+    <p>This static site minimizes data collection. Analytics (if enabled) should be disclosed here.</p>
+  </div>
+</BaseLayout>

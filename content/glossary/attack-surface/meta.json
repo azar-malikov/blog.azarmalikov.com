@@ -1,0 +1,17 @@
+{
+  "slug": "attack-surface",
+  "keyword": "Attack surface",
+  "category": "strategy",
+  "aliases": ["exposure surface"],
+  "relatedTools": ["nmap", "inventory scripts"],
+  "relatedTechniques": ["T1046"],
+  "links": {
+    "writeups": [],
+    "cheatsheets": ["nmap-sweep"],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

@@ -1,0 +1,151 @@
+---
+import type { Locale } from '@/lib/constants';
+import { SITE } from '@/lib/constants';
+import { localizedPath } from '@/lib/paths';
+import { t } from '@/lib/i18n/ui';
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
+
+interface Props {
+  lang: Locale;
+  path: string;
+}
+
+const { lang, path } = Astro.props;
+const normalizedPath = path.endsWith('/') ? path : `${path}/`;
+
+const nav = [
+  { href: localizedPath(lang, '/'), label: t(lang, 'nav.home') },
+  { href: localizedPath(lang, '/blog'), label: t(lang, 'nav.blog') },
+  { href: localizedPath(lang, '/writeups'), label: t(lang, 'nav.writeups') },
+  { href: localizedPath(lang, '/cheatsheets'), label: t(lang, 'nav.cheatsheets') },
+  { href: localizedPath(lang, '/checklists'), label: t(lang, 'nav.checklists') },
+  { href: localizedPath(lang, '/glossary'), label: t(lang, 'nav.glossary') },
+  { href: localizedPath(lang, '/notes'), label: t(lang, 'nav.notes') },
+  { href: localizedPath(lang, '/research'), label: t(lang, 'nav.research') },
+  { href: localizedPath(lang, '/about'), label: t(lang, 'nav.about') },
+  { href: localizedPath(lang, '/contact'), label: t(lang, 'nav.contact') }
+];
+
+function isActive(href: string): boolean {
+  if (href === localizedPath(lang, '/')) {
+    return normalizedPath === `/${lang}/` || normalizedPath === `/${lang}`;
+  }
+  return normalizedPath === href || normalizedPath.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-40 border-b border-line/60 bg-canvas/85 backdrop-blur-lg">
+  <div class="mx-auto flex max-w-content items-center justify-between gap-4 px-5 py-3.5 md:px-10">
+    <a href={localizedPath(lang, '/')} class="group flex min-w-0 items-baseline gap-3">
+      <span class="font-mono text-[11px] font-medium tracking-[0.12em] text-signal">{SITE.studioCode}</span>
+      <span class="hidden h-4 w-px bg-line/70 sm:block" aria-hidden="true"></span>
+      <span class="font-display text-lg tracking-tight text-ink md:text-[1.35rem]">{SITE.name}</span>
+    </a>
+
+    <div class="flex items-center gap-1 sm:gap-2">
+      <a
+        href={localizedPath(lang, '/search')}
+        class="hidden px-2 py-1.5 font-ui text-xs font-semibold text-ink-muted underline-offset-4 hover:text-ink hover:underline md:inline"
+        >{t(lang, 'nav.search')}</a
+      >
+      <LanguageSwitcher lang={lang} path={path} />
+      <button
+        type="button"
+        id="theme-toggle"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-ink-muted transition hover:border-line/80 hover:bg-canvas-muted/60 hover:text-ink"
+        aria-label="Toggle theme"
+      >
+        <svg class="theme-icon theme-icon--sun h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke-width="1.5"></circle>
+          <path stroke-width="1.5" stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+        <svg class="theme-icon theme-icon--moon hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path stroke-width="1.5" stroke-linecap="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="nav-toggle"
+        class="inline-flex h-9 w-9 items-center justify-center rounded-md border border-line/60 text-ink md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+        aria-label="Open menu"
+      >
+        <span class="font-mono text-lg leading-none">≡</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="hidden border-t border-line/40 md:block" aria-label="Primary">
+    <div class="mx-auto flex max-w-content flex-wrap gap-x-1 gap-y-0 px-5 md:px-10">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'relative -mb-px border-b-2 border-transparent px-2.5 py-3 font-ui text-[13px] font-semibold tracking-tight text-ink-muted transition-colors hover:text-ink',
+              isActive(item.href) ? 'border-signal text-ink' : ''
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+  </nav>
+
+  <div id="mobile-nav" class="hidden border-t border-line/40 bg-canvas-elevated/95 md:hidden">
+    <div class="mx-auto max-w-content space-y-0.5 px-5 py-4">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class:list={[
+              'block border-l-2 py-2.5 pl-4 font-ui text-sm',
+              isActive(item.href) ? 'border-signal bg-canvas-muted/50 font-semibold text-ink' : 'border-transparent text-ink-muted'
+            ]}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={localizedPath(lang, '/search')}
+        class="block border-l-2 border-transparent py-2.5 pl-4 font-ui text-sm font-semibold text-ink"
+        >{t(lang, 'nav.search')}</a
+      >
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const btn = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+  btn?.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+
+  const navBtn = document.getElementById('nav-toggle');
+  const mobile = document.getElementById('mobile-nav');
+  navBtn?.addEventListener('click', () => {
+    const open = mobile?.classList.toggle('hidden') === false;
+    navBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+</script>
+
+<style>
+  [data-theme='dark'] .theme-icon--sun {
+    display: none;
+  }
+  [data-theme='dark'] .theme-icon--moon {
+    display: block;
+  }
+  [data-theme='light'] .theme-icon--moon {
+    display: none;
+  }
+  [data-theme='light'] .theme-icon--sun {
+    display: block;
+  }
+</style>

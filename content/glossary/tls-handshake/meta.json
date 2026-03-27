@@ -1,0 +1,17 @@
+{
+  "slug": "tls-handshake",
+  "keyword": "TLS handshake",
+  "category": "crypto",
+  "aliases": ["SSL handshake"],
+  "relatedTools": ["openssl", "browser devtools"],
+  "relatedTechniques": [],
+  "links": {
+    "writeups": [],
+    "cheatsheets": ["openssl-sclient"],
+    "notes": []
+  },
+  "translation": {
+    "sourceLocale": "en",
+    "statusByLocale": { "en": "source", "az": "missing", "tr": "missing", "ru": "missing" }
+  }
+}

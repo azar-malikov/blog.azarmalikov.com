@@ -1,0 +1,123 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TranslationBanner from '@/components/article/TranslationBanner.astro';
+import ShareBar from '@/components/article/ShareBar.astro';
+import RelatedPanel from '@/components/article/RelatedPanel.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { absoluteUrl, jsonLdArticle } from '@/lib/seo';
+import { alternateLocalesForSlug, adjacentPosts, getAllBlogEntries, getBlogBySlug } from '@/lib/content/blog';
+import { relatedFromBlog } from '@/lib/relations';
+
+export function getStaticPaths() {
+  return getAllBlogEntries().map((e) => ({ params: { lang: e.locale, slug: e.slug } }));
+}
+
+const { lang: raw, slug: rawSlug } = Astro.params;
+if (!isLocale(raw ?? '') || !rawSlug) throw new Error('Invalid params');
+const lang = raw as Locale;
+const slug = rawSlug;
+const entry = getBlogBySlug(slug, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const { prev, next } = adjacentPosts(slug, lang);
+const related = relatedFromBlog(entry, lang);
+const alternatesMap = alternateLocalesForSlug(slug);
+const hreflang = (['en', 'az', 'tr', 'ru'] as Locale[])
+  .map((l) => {
+    const href = alternatesMap[l];
+    return href ? { hreflang: l, href: absoluteUrl(href) } : null;
+  })
+  .filter(Boolean) as { hreflang: string; href: string }[];
+
+const jsonLd = jsonLdArticle({
+  title: entry.fm.title,
+  description: entry.fm.description,
+  canonicalPath: path,
+  locale: lang,
+  ogImage: entry.meta.coverImage,
+  type: 'article',
+  publishedTime: entry.fm.publishedAt,
+  modifiedTime: entry.fm.updatedAt ?? entry.fm.publishedAt,
+  author: entry.meta.author.name
+});
+
+const { Content } = entry;
+---
+
+<BaseLayout
+  title={entry.fm.title}
+  description={entry.fm.description}
+  lang={lang}
+  path={path}
+  ogImage={entry.meta.coverImage}
+  alternates={hreflang}
+  jsonLd={jsonLd}
+>
+  <article class="mx-auto max-w-content">
+    <TranslationBanner lang={lang} stale={entry.stale} alternates={alternatesMap} />
+
+    <header class="max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-ink-faint">{t(lang, 'nav.blog')}</p>
+      <h1 class="mt-4 font-display text-display-xl text-ink">{entry.fm.title}</h1>
+      <p class="mt-4 text-lg text-ink-muted">{entry.fm.description}</p>
+      <div class="mt-6 flex flex-wrap gap-4 text-sm text-ink-muted">
+        <span>
+          {t(lang, 'common.published')} {entry.fm.publishedAt}
+        </span>
+        <span>·</span>
+        <span>
+          {entry.readingMinutes} {t(lang, 'common.minRead')}
+        </span>
+        <span>·</span>
+        <span>{entry.meta.author.name}</span>
+      </div>
+      <div class="mt-6 flex flex-wrap gap-2">
+        {entry.meta.category.map((c) => (
+          <a
+            class="rounded-full border border-line/70 bg-canvas-muted/60 px-3 py-1 text-xs text-ink hover:border-accent/40"
+            href={`/${lang}/categories`}
+          >
+            {c}
+          </a>
+        ))}
+      </div>
+    </header>
+
+    <div class="prose-article mt-12 max-w-measure">
+      <Content />
+    </div>
+
+    <div class="mx-auto mt-12 max-w-measure border-t border-line/40 pt-8">
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">{t(lang, 'common.lineage')}</p>
+      <p class="mt-2 text-sm text-ink-muted">
+        Linked glossary terms and cheat sheets are curated in <code class="font-mono text-xs">meta.json</code> for
+        repeatable cross-navigation.
+      </p>
+    </div>
+
+    <RelatedPanel title={t(lang, 'common.related')} items={related} />
+
+    <ShareBar lang={lang} urlPath={path} title={entry.fm.title} />
+
+    <nav class="mt-10 grid gap-4 border-t border-line/60 pt-8 md:grid-cols-2">
+      <div>
+        {prev ? (
+          <a class="block rounded-2xl border border-line/60 bg-canvas-muted/40 p-4 text-sm" href={`/${lang}/blog/${prev.slug}/`}>
+            <span class="text-ink-faint">← Previous</span>
+            <p class="mt-2 font-display text-lg text-ink">{prev.fm.title}</p>
+          </a>
+        ) : null}
+      </div>
+      <div class="md:text-right">
+        {next ? (
+          <a class="block rounded-2xl border border-line/60 bg-canvas-muted/40 p-4 text-sm" href={`/${lang}/blog/${next.slug}/`}>
+            <span class="text-ink-faint">Next →</span>
+            <p class="mt-2 font-display text-lg text-ink">{next.fm.title}</p>
+          </a>
+        ) : null}
+      </div>
+    </nav>
+  </article>
+</BaseLayout>

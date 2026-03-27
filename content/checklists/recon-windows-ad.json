@@ -1,0 +1,29 @@
+{
+  "id": "recon-windows-ad",
+  "title": "Windows AD enumeration (first hour)",
+  "description": "Questions that turn a directory into a navigable model.",
+  "category": "methodology",
+  "tags": ["active directory", "enumeration"],
+  "links": {
+    "writeups": ["ad-enumeration-basics"],
+    "cheatsheets": ["ldap-filter-tricks", "kerberos-clients"],
+    "glossary": ["kerberos"],
+    "notes": []
+  },
+  "groups": [
+    {
+      "title": "Ground truth",
+      "items": [
+        { "id": "ad-1", "text": "Confirm domain name, DCs, and time sync expectations." },
+        { "id": "ad-2", "text": "Validate credential material and ticket behavior before deep LDAP." }
+      ]
+    },
+    {
+      "title": "Directory questions",
+      "items": [
+        { "id": "ad-3", "text": "List privileged groups and delegation surfaces you can explain." },
+        { "id": "ad-4", "text": "Translate findings into graph questions: paths, not lists." }
+      ]
+    }
+  ]
+}

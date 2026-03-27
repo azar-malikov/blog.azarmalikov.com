@@ -1,0 +1,59 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { getAllChecklists, getChecklistById } from '@/lib/content/checklists';
+
+export function getStaticPaths() {
+  const ids = getAllChecklists().map((c) => c.id);
+  const locales = ['en', 'az', 'tr', 'ru'] as const;
+  const out: { params: { lang: string; id: string } }[] = [];
+  for (const lang of locales) {
+    for (const id of ids) out.push({ params: { lang, id } });
+  }
+  return out;
+}
+
+const { lang: raw, id } = Astro.params;
+if (!isLocale(raw ?? '') || !id) throw new Error('Invalid params');
+const lang = raw as Locale;
+const checklist = getChecklistById(id);
+if (!checklist) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+---
+
+<BaseLayout title={checklist.title} description={checklist.description ?? ''} lang={lang} path={path}>
+  <article class="mx-auto max-w-content">
+    <header class="max-w-3xl">
+      <p class="text-xs font-semibold uppercase tracking-[0.28em] text-ink-faint">{t(lang, 'nav.checklists')}</p>
+      <h1 class="mt-4 font-display text-display-xl text-ink">{checklist.title}</h1>
+      {checklist.description ? <p class="mt-4 text-lg text-ink-muted">{checklist.description}</p> : null}
+    </header>
+
+    <div class="mt-10 space-y-10 print:space-y-8">
+      {
+        checklist.groups.map((g) => (
+          <section class="rounded-2xl border border-line/60 bg-canvas-elevated/70 p-6">
+            <h2 class="font-display text-2xl text-ink">{g.title}</h2>
+            <ol class="mt-4 space-y-3">
+              {g.items.map((it, idx) => (
+                <li class="flex gap-3 text-sm text-ink-muted">
+                  <input type="checkbox" class="mt-1" disabled aria-label={`Step ${idx + 1}`} />
+                  <div>
+                    <p class="text-ink">{it.text}</p>
+                    {it.note ? <p class="mt-1 text-xs text-ink-faint">{it.note}</p> : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      }
+    </div>
+
+    <p class="mt-10 text-xs text-ink-faint">
+      Progress checkboxes are placeholders on static hosting—wire to local storage or an authenticated API later.
+    </p>
+  </article>
+</BaseLayout>

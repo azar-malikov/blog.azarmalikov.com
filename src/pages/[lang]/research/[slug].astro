@@ -1,0 +1,30 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { getAllResearch, getResearchBySlug } from '@/lib/content/research';
+
+export function getStaticPaths() {
+  return getAllResearch().map((r) => ({ params: { lang: r.locale, slug: r.slug } }));
+}
+
+const { lang: raw, slug: rawSlug } = Astro.params;
+if (!isLocale(raw ?? '') || !rawSlug) throw new Error('Invalid params');
+const lang = raw as Locale;
+const entry = getResearchBySlug(rawSlug, lang);
+if (!entry) throw new Error('Not found');
+
+const path = Astro.url.pathname;
+const { Content } = entry;
+---
+
+<BaseLayout title={entry.meta.title} description={entry.meta.status} lang={lang} path={path}>
+  <article class="mx-auto max-w-measure">
+    <header>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">{entry.meta.status}</p>
+      <h1 class="mt-3 font-display text-display-xl text-ink">{entry.meta.title}</h1>
+    </header>
+    <div class="prose-article mt-8">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

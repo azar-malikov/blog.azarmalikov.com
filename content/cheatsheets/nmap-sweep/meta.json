@@ -1,0 +1,16 @@
+{
+  "id": "nmap-sweep",
+  "title": "Nmap: disciplined discovery sweeps",
+  "shortDescription": "Low-noise host discovery and top-port service hints without turning into a storm scanner.",
+  "category": "network",
+  "tags": ["nmap", "recon"],
+  "sourceTool": "nmap",
+  "platform": ["linux", "macos", "windows"],
+  "warnings": ["Respect scope and rate limits. Unauthorized scanning is illegal."],
+  "links": {
+    "writeups": [],
+    "glossary": ["attack-surface"],
+    "snippets": []
+  },
+  "promotedFrom": [{ "writeupSlug": "htb-linux-privesc-01", "stageId": "recon" }]
+}

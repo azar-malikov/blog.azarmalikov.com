@@ -1,0 +1,36 @@
+{
+  "id": "recon-linux-web",
+  "title": "Linux web host reconnaissance (methodical)",
+  "description": "A first-pass checklist for structured observation before exploitation.",
+  "category": "methodology",
+  "tags": ["recon", "web", "linux"],
+  "links": {
+    "writeups": ["htb-linux-privesc-01"],
+    "cheatsheets": ["find-suid", "journalctl"],
+    "glossary": ["attack-surface"],
+    "notes": []
+  },
+  "groups": [
+    {
+      "title": "Identity & context",
+      "items": [
+        { "id": "ctx-1", "text": "Confirm user context: uid/gid, groups, shell behavior." },
+        { "id": "ctx-2", "text": "Record hostname, kernel, and distro clues for known vuln classes." }
+      ]
+    },
+    {
+      "title": "Filesystem signals",
+      "items": [
+        { "id": "fs-1", "text": "Inventory SUID/SGID and capabilities with quiet error handling." },
+        { "id": "fs-2", "text": "Check cron, timers, and writable paths that affect boot or service startup." }
+      ]
+    },
+    {
+      "title": "Service narrative",
+      "items": [
+        { "id": "svc-1", "text": "Map running services to config locations and log channels." },
+        { "id": "svc-2", "text": "Build a timeline hypothesis before grepping logs blindly." }
+      ]
+    }
+  ]
+}

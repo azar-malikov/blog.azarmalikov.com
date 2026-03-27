@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+import { listBlogForLocale } from '@/lib/content/blog';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+const path = Astro.url.pathname;
+const posts = listBlogForLocale(lang);
+---
+
+<BaseLayout title={t(lang, 'nav.blog')} description={t(lang, 'home.hero.lead')} lang={lang} path={path}>
+  <header class="mb-12 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Journal</p>
+    <h1 class="mt-3 font-display text-display-xl text-ink">{t(lang, 'nav.blog')}</h1>
+    <p class="mt-4 text-lg text-ink-muted">Long-form essays and notes on craft.</p>
+  </header>
+
+  <div class="space-y-6">
+    {
+      posts.map((p) => (
+        <a
+          href={`/${lang}/blog/${p.slug}/`}
+          class="block rounded-2xl border border-line/60 bg-canvas-elevated/80 p-6 transition hover:border-accent/40"
+        >
+          <div class="flex flex-wrap items-center gap-3 text-xs text-ink-faint">
+            <span>{p.fm.publishedAt}</span>
+            <span>·</span>
+            <span>{p.readingMinutes} {t(lang, 'common.minRead')}</span>
+          </div>
+          <h2 class="mt-3 font-display text-2xl text-ink">{p.fm.title}</h2>
+          <p class="mt-3 text-sm text-ink-muted">{p.fm.description}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {p.meta.tags.map((tag) => (
+              <span class="rounded-full border border-line/60 bg-canvas-muted/60 px-2 py-0.5 text-[11px] text-ink-muted">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </a>
+      ))
+    }
+  </div>
+
+  {posts.length === 0 ? (
+    <p class="rounded-2xl border border-dashed border-line/60 bg-canvas-muted/30 p-8 text-sm text-ink-muted">
+      No posts for this locale yet. Switch language or add content under <code class="font-mono">content/blog/</code>.
+    </p>
+  ) : null}
+</BaseLayout>

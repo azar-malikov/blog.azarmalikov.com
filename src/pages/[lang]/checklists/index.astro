@@ -1,0 +1,42 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { isLocale, type Locale } from '@/lib/constants';
+import { t } from '@/lib/i18n/ui';
+import { langStaticPaths } from '@/lib/i18n/routing';
+import { getAllChecklists } from '@/lib/content/checklists';
+
+export function getStaticPaths() {
+  return langStaticPaths();
+}
+
+const { lang: raw } = Astro.params;
+if (!isLocale(raw ?? '')) throw new Error('Invalid locale');
+const lang = raw as Locale;
+const path = Astro.url.pathname;
+const items = getAllChecklists();
+---
+
+<BaseLayout title={t(lang, 'nav.checklists')} description="Reusable methodology checklists." lang={lang} path={path}>
+  <header class="mb-12 max-w-3xl">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Checklists</p>
+    <h1 class="mt-3 font-display text-display-xl text-ink">{t(lang, 'nav.checklists')}</h1>
+    <p class="mt-4 text-lg text-ink-muted">
+      Structured workflows. Client-side progress persistence can be layered later without changing content.
+    </p>
+  </header>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    {
+      items.map((c) => (
+        <a
+          href={`/${lang}/checklists/${c.id}/`}
+          class="rounded-2xl border border-line/60 bg-canvas-elevated/80 p-5 transition hover:border-accent/40"
+        >
+          <p class="text-xs text-ink-faint">{c.category}</p>
+          <p class="mt-2 font-display text-xl text-ink">{c.title}</p>
+          {c.description ? <p class="mt-2 text-sm text-ink-muted">{c.description}</p> : null}
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>

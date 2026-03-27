@@ -1,0 +1,15 @@
+{
+  "id": "journalctl",
+  "title": "journalctl: investigation windows",
+  "shortDescription": "Structured systemd journal queries for DFIR-style timelines.",
+  "category": "linux",
+  "tags": ["dfir", "logs"],
+  "sourceTool": "journalctl",
+  "platform": ["linux"],
+  "links": {
+    "writeups": [],
+    "glossary": ["indicator-of-compromise"],
+    "snippets": ["snippet-journal-since"]
+  },
+  "promotedFrom": []
+}
